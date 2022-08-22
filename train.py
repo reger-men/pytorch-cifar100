@@ -71,7 +71,6 @@ def train(epoch):
         writer.add_histogram("{}/{}".format(layer, attr), param, epoch)
 
     finish = time.time()
-
     e_time = finish - start
     imgs = len(cifar100_training_loader.dataset) / e_time
     print('epoch {} img/sec: {:.2f}, training time consumed: {:.2f}s'.format(epoch, imgs, e_time))
@@ -99,7 +98,6 @@ def eval_training(epoch=0, tb=True):
         correct += preds.eq(labels).sum()
 
     finish = time.time()
-    
     e_time = finish - start
     imgs = len(cifar100_training_loader.dataset) / e_time
 
