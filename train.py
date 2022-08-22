@@ -72,7 +72,9 @@ def train(epoch):
 
     finish = time.time()
 
-    print('epoch {} training time consumed: {:.2f}s'.format(epoch, finish - start))
+    e_time = finish - start
+    imgs = len(cifar100_training_loader.dataset) / e_time
+    print('epoch {} img/sec: {:.2f}, training time consumed: {:.2f}s'.format(epoch, imgs, e_time))
 
 @torch.no_grad()
 def eval_training(epoch=0, tb=True):
@@ -97,15 +99,20 @@ def eval_training(epoch=0, tb=True):
         correct += preds.eq(labels).sum()
 
     finish = time.time()
+    
+    e_time = finish - start
+    imgs = len(cifar100_training_loader.dataset) / e_time
+
     if args.gpu:
         print('GPU INFO.....')
         print(torch.cuda.memory_summary(), end='')
     print('Evaluating Network.....')
-    print('Test set: Epoch: {}, Average loss: {:.4f}, Accuracy: {:.4f}, Time consumed:{:.2f}s'.format(
+    print('Test set: Epoch: {}, Average loss: {:.4f}, Accuracy: {:.4f}, img/sec: {:.2f}, Time consumed:{:.2f}s'.format(
         epoch,
         test_loss / len(cifar100_test_loader.dataset),
         correct.float() / len(cifar100_test_loader.dataset),
-        finish - start
+        imgs,
+        e_time
     ))
     print()
 
